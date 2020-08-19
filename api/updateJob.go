@@ -36,53 +36,19 @@ func UpdateJob(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
 			return
 		}
-		// WebAccess integration
+
 		switch *r.EventID {
 		case 10, 11, 12:
+			// Write status code to PLC using WebAccess API
 			err = services.SetTagValue("dotzero", models.WStatTags[index], *r.EventID)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
 				return
 			}
-			/*
-				switch index {
-				case 0:
-					err = services.SetTagValue("dotzero", models.W01Status, *r.EventID)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 1:
-					err = services.SetTagValue("dotzero", models.W02Status, *r.EventID)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 2:
-					err = services.SetTagValue("dotzero", models.W03Status, *r.EventID)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 3:
-					err = services.SetTagValue("dotzero", models.W04Status, *r.EventID)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 4:
-					err = services.SetTagValue("dotzero", models.W05Status, *r.EventID)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				default:
-					c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
-					return
-				}
-			*/
+
 			c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
 			return
+
 		case 0:
 			// Job finish procedure (r.EventID = 0)
 			val, err := services.GetTagValue("dotzero", models.GetJobMetrics(index))
@@ -94,204 +60,43 @@ func UpdateJob(c *gin.Context) {
 				FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
 				Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
 			}
+			// Update job metrics with iShopFloor API
 			if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 				return
 			}
+			// Update job status with iShopFloor API
 			err = services.SetJobDone(r.JobID, "1", "", "")
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 				return
 			}
-			// Set job complete
+			// Set job complete code in PLC with WebAccess API
 			err = services.SetTagValue("dotzero", models.W01Status, 0)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
 				return
 			}
-			/*
-				switch index {
-				case 0:
-					// Call iShopFloor API
-					wtTags := []string{models.W01WtBktEmpt, models.W01WtBktFull}
-					degTags := []string{models.W01TimeDegrease1, models.W01TimeDegrease2, models.W01TimeDegrease3}
-					pickTags := []string{models.W01TimePickling1, models.W01TimePickling2, models.W01TimePickling3}
-					fluxTags := []string{models.W01TimeFlux}
-					tempTags := []string{models.Preproc01Temp, models.Preproc02Temp, models.Preproc03Temp, models.Preproc04Temp, models.Preproc05Temp}
-					tags := append(wtTags, degTags...)
-					tagss := append(pickTags, fluxTags...)
-					tags = append(tags, tagss...)
-					tags = append(tags, tempTags...)
-					val, err := services.GetTagValue("dotzero", tags)
 
-					metrics := services.MetricsFields{
-						EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
-						FullBucketWeight:  strconv.FormatFloat(val[1], 'f', -1, 64),
-						DegreasingTime:    strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-						PicklingTime:      strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64),
-						FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
-						Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
-					}
-
-					if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-						return
-					}
-					// Set job complete
-					err = services.SetTagValue("dotzero", models.W01Status, 0)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 1:
-					// Call iShopFloor API
-					wtTags := []string{models.W02WtBktEmpt, models.W02WtBktFull}
-					degTags := []string{models.W02TimeDegrease1, models.W02TimeDegrease2, models.W02TimeDegrease3}
-					pickTags := []string{models.W02TimePickling1, models.W02TimePickling2, models.W02TimePickling3}
-					fluxTags := []string{models.W02TimeFlux}
-					tempTags := []string{models.Preproc01Temp, models.Preproc02Temp, models.Preproc03Temp, models.Preproc04Temp, models.Preproc05Temp}
-					tags := append(wtTags, degTags...)
-					tagss := append(pickTags, fluxTags...)
-					tags = append(tags, tagss...)
-					tags = append(tags, tempTags...)
-					val, err := services.GetTagValue("dotzero", tags)
-
-					metrics := services.MetricsFields{
-						EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
-						FullBucketWeight:  strconv.FormatFloat(val[1], 'f', -1, 64),
-						DegreasingTime:    strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-						PicklingTime:      strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64),
-						FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
-						Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
-					}
-
-					if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-						return
-					}
-					// Set job complete
-					err = services.SetTagValue("dotzero", models.W02Status, 0)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 2:
-					// Call iShopFloor API
-					wtTags := []string{models.W03WtBktEmpt, models.W03WtBktFull}
-					degTags := []string{models.W03TimeDegrease1, models.W03TimeDegrease2, models.W03TimeDegrease3}
-					pickTags := []string{models.W03TimePickling1, models.W03TimePickling2, models.W03TimePickling3}
-					fluxTags := []string{models.W03TimeFlux}
-					tempTags := []string{models.Preproc01Temp, models.Preproc02Temp, models.Preproc03Temp, models.Preproc04Temp, models.Preproc05Temp}
-					tags := append(wtTags, degTags...)
-					tagss := append(pickTags, fluxTags...)
-					tags = append(tags, tagss...)
-					tags = append(tags, tempTags...)
-					val, err := services.GetTagValue("dotzero", tags)
-
-					metrics := services.MetricsFields{
-						EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
-						FullBucketWeight:  strconv.FormatFloat(val[1], 'f', -1, 64),
-						DegreasingTime:    strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-						PicklingTime:      strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64),
-						FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
-						Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
-					}
-
-					if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-						return
-					}
-					// Set job complete
-					err = services.SetTagValue("dotzero", models.W03Status, 0)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 3:
-					// Call iShopFloor API
-					wtTags := []string{models.W04WtBktEmpt, models.W04WtBktFull}
-					degTags := []string{models.W04TimeDegrease1, models.W04TimeDegrease2, models.W04TimeDegrease3}
-					pickTags := []string{models.W04TimePickling1, models.W04TimePickling2, models.W04TimePickling3}
-					fluxTags := []string{models.W04TimeFlux}
-					tempTags := []string{models.Preproc01Temp, models.Preproc02Temp, models.Preproc03Temp, models.Preproc04Temp, models.Preproc05Temp}
-					tags := append(wtTags, degTags...)
-					tagss := append(pickTags, fluxTags...)
-					tags = append(tags, tagss...)
-					tags = append(tags, tempTags...)
-					val, err := services.GetTagValue("dotzero", tags)
-
-					metrics := services.MetricsFields{
-						EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
-						FullBucketWeight:  strconv.FormatFloat(val[1], 'f', -1, 64),
-						DegreasingTime:    strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-						PicklingTime:      strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64),
-						FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
-						Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
-					}
-
-					if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-						return
-					}
-					// Set job complete
-					err = services.SetTagValue("dotzero", models.W04Status, 0)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				case 4:
-					// Call iShopFloor API
-					wtTags := []string{models.W05WtBktEmpt, models.W05WtBktFull}
-					degTags := []string{models.W05TimeDegrease1, models.W05TimeDegrease2, models.W05TimeDegrease3}
-					pickTags := []string{models.W05TimePickling1, models.W05TimePickling2, models.W05TimePickling3}
-					fluxTags := []string{models.W05TimeFlux}
-					tempTags := []string{models.Preproc01Temp, models.Preproc02Temp, models.Preproc03Temp, models.Preproc04Temp, models.Preproc05Temp}
-					tags := append(wtTags, degTags...)
-					tagss := append(pickTags, fluxTags...)
-					tags = append(tags, tagss...)
-					tags = append(tags, tempTags...)
-					val, err := services.GetTagValue("dotzero", tags)
-
-					metrics := services.MetricsFields{
-						EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
-						FullBucketWeight:  strconv.FormatFloat(val[1], 'f', -1, 64),
-						DegreasingTime:    strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-						PicklingTime:      strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64),
-						FluxTime:          strconv.FormatFloat(val[8], 'f', -1, 64),
-						Temp:              strconv.FormatFloat(val[9], 'f', -1, 64) + "," + strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64),
-					}
-
-					if err := services.UpdateMetrics(r.JobID, "1", metrics); err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-						return
-					}
-					// Set job complete
-					err = services.SetTagValue("dotzero", models.W05Status, 0)
-					if err != nil {
-						c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
-						return
-					}
-				default:
-					c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
-					return
-				}
-			*/
 			c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
 			return
+
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"code": "u001", "message": "unknown EventID for the pre-treatment process"})
 			return
 		}
+
 	case "gal":
 		index, err := models.UpdateJob(r.Process, r.JobID, *r.EventID)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		// WebAccess integration
+
 		switch *r.EventID {
 		case 10, 11, 12:
 			switch index {
+			// Write status code to PLC using WebAccess API
 			case 0:
 				err = services.SetTagValue("dotzero", models.G01Status, *r.EventID)
 				if err != nil {
@@ -305,7 +110,7 @@ func UpdateJob(c *gin.Context) {
 					return
 				}
 			default:
-				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
+				c.JSON(http.StatusInternalServerError, gin.H{"code": "u001", "message": "update galvanizing job index out of bound"})
 				return
 			}
 			c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
@@ -390,15 +195,17 @@ func UpdateJob(c *gin.Context) {
 					return
 				}
 			default:
-				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
+				c.JSON(http.StatusInternalServerError, gin.H{"code": "u001", "message": "update galvanizing job index out of bound"})
 				return
 			}
 			c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
 			return
+
 		default:
 			c.JSON(http.StatusBadRequest, gin.H{"code": "u001", "message": "unknown EventID for the galvanizing process"})
 			return
 		}
+
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"code": "u001", "message": "Unknown process. Process must be 'pre' (pre-treatment) or 'gal' (galvanization)."})
 	}

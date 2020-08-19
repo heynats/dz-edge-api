@@ -49,80 +49,10 @@ func CreateJob(c *gin.Context) {
 			models.RemoveJob(r.Process, index)
 			return
 		}
-		/*
-			switch index {
-			case 0:
-				err = services.SetTagValue("dotzero", models.WStatTags[index], 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.WIDTags[index], r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			case 1:
-				err = services.SetTagValue("dotzero", models.W02Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.W02Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			case 2:
-				err = services.SetTagValue("dotzero", models.W03Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.W03Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			case 3:
-				err = services.SetTagValue("dotzero", models.W04Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.W04Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			case 4:
-				err = services.SetTagValue("dotzero", models.W05Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.W05Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			default:
-				c.JSON(http.StatusInternalServerError, gin.H{"message": "add pre-treatment job index out of bound"})
-				return
-			}
-		*/
+
 		c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
 		return
+
 	case "gal":
 		index, err := models.AddJob(r.Process, r.JobID, 1)
 		if err != nil {
@@ -145,41 +75,10 @@ func CreateJob(c *gin.Context) {
 			models.RemoveJob(r.Process, index)
 			return
 		}
-		/*
-			switch index {
-			case 0:
-				err = services.SetTagValue("dotzero", models.G01Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.G01Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			case 1:
-				err = services.SetTagValue("dotzero", models.G02Status, 1)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-				err = services.SetTextTagValue("dotzero", models.G02Id, r.JobID)
-				if err != nil {
-					c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
-					models.RemoveJob(r.Process, index)
-					return
-				}
-			default:
-				c.JSON(http.StatusInternalServerError, gin.H{"message": "add galvanizing job index out of bound"})
-				return
-			}
-		*/
+
 		c.JSON(http.StatusOK, gin.H{"woID": r.JobID, "queueIndex": index})
 		return
+
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Unknown process. Process must be 'pre' (pre-treatment) or 'gal' (galvanization)."})
 	}

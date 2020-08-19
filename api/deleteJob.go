@@ -44,5 +44,5 @@ func DeleteAllJobs(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Removed all jobs."})
+	c.JSON(http.StatusOK, gin.H{"message": "removed all jobs"})
 }

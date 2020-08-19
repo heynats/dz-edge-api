@@ -92,22 +92,6 @@ type jobQueueItem struct {
 	status int
 }
 
-// func (item *jobQueueItem) getStatus() int {
-// 	return item.status
-// }
-
-// func (item *jobQueueItem) setStatus(i int) {
-// 	item.status = i
-// }
-
-// func (item *jobQueueItem) getJobID() string {
-// 	return item.jobID
-// }
-
-// func (item *jobQueueItem) setJobID(s string) {
-// 	item.jobID = s
-// }
-
 // preprocQueue represents the buffer registers for the "pre-treatment" process
 var preprocQueue = []jobQueueItem{
 	{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},

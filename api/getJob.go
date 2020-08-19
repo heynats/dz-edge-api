@@ -82,45 +82,6 @@ func getPreData(i int, job string) (*preprocData, error) {
 		return nil, err
 	}
 	return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[14])}, nil
-	/*
-		switch i {
-		case 0:
-			valTagStr := []string{models.W01WtBktEmpt, models.W01WtBktFull, models.W01TimeDegrease1, models.W01TimeDegrease2, models.W01TimeDegrease3, models.W01TimePickling1, models.W01TimePickling2, models.W01TimePickling3, models.W01TimeFlux, models.W01WtGood}
-			val, err := services.GetTagValue("dotzero", valTagStr)
-			if err != nil {
-				return nil, err
-			}
-			return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}, nil
-		case 1:
-			valTagStr := []string{models.W02WtBktEmpt, models.W02WtBktFull, models.W02TimeDegrease1, models.W02TimeDegrease2, models.W02TimeDegrease3, models.W02TimePickling1, models.W02TimePickling2, models.W02TimePickling3, models.W02TimeFlux, models.W02WtGood}
-			val, err := services.GetTagValue("dotzero", valTagStr)
-			if err != nil {
-				return nil, err
-			}
-			return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}, nil
-		case 2:
-			valTagStr := []string{models.W03WtBktEmpt, models.W03WtBktFull, models.W03TimeDegrease1, models.W03TimeDegrease2, models.W03TimeDegrease3, models.W03TimePickling1, models.W03TimePickling2, models.W03TimePickling3, models.W03TimeFlux, models.W03WtGood}
-			val, err := services.GetTagValue("dotzero", valTagStr)
-			if err != nil {
-				return nil, err
-			}
-			return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}, nil
-		case 3:
-			valTagStr := []string{models.W04WtBktEmpt, models.W04WtBktFull, models.W04TimeDegrease1, models.W04TimeDegrease2, models.W04TimeDegrease3, models.W04TimePickling1, models.W04TimePickling2, models.W04TimePickling3, models.W04TimeFlux, models.W04WtGood}
-			val, err := services.GetTagValue("dotzero", valTagStr)
-			if err != nil {
-				return nil, err
-			}
-			return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}, nil
-		case 4:
-			valTagStr := []string{models.W05WtBktEmpt, models.W05WtBktFull, models.W05TimeDegrease1, models.W05TimeDegrease2, models.W05TimeDegrease3, models.W05TimePickling1, models.W05TimePickling2, models.W05TimePickling3, models.W05TimeFlux, models.W05WtGood}
-			val, err := services.GetTagValue("dotzero", valTagStr)
-			if err != nil {
-				return nil, err
-			}
-			return &preprocData{"Pre-treatment", job, float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}, nil
-		}
-	*/
 }
 
 func getGalData(i int, job string) (*galData, error) {
