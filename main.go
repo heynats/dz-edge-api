@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -22,9 +23,13 @@ func main() {
 	/\  ___\ /\  __-. /\  ___\ /\  ___\ /\  __ \ /\  == \/\ \   
 	\ \  __\ \ \ \/\ \\ \ \__ \\ \  __\ \ \  __ \\ \  _-/\ \ \  
 	 \ \_____\\ \____- \ \_____\\ \_____\\ \_\ \_\\ \_\   \ \_\ 
-	  \/_____/ \/____/  \/_____/ \/_____/ \/_/\/_/ \/_/    \/_/  v1.0.1 by Stanley Yeh, 2020
+	  \/_____/ \/____/  \/_____/ \/_____/ \/_/\/_/ \/_/    \/_/  v1.0.2 by Stanley Yeh, 2020
 	`
 	fmt.Println(asciiArt + "\n")
+
+	gin.DisableConsoleColor()
+	f, _ := os.Create("gin.log")
+	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
 
 	router := gin.Default()
 

@@ -112,17 +112,29 @@ func InitQueues() error {
 	if err != nil {
 		return err
 	}
+	if len(wID) == 0 {
+		return errors.New("WebAccess GetTextTagValue returns empty response")
+	}
 	wStat, err := services.GetTagValue("dotzero", WStatTags)
 	if err != nil {
 		return err
+	}
+	if len(wStat) == 0 {
+		return errors.New("WebAccess GetTagValue returns empty response")
 	}
 	gID, err := services.GetTextTagValue("dotzero", GIDTags)
 	if err != nil {
 		return err
 	}
+	if len(gID) == 0 {
+		return errors.New("WebAccess GetTextTagValue returns empty response")
+	}
 	gStat, err := services.GetTagValue("dotzero", GStatTags)
 	if err != nil {
 		return err
+	}
+	if len(gStat) == 0 {
+		return errors.New("WebAccess GetTagValue returns empty response")
 	}
 
 	for i, item := range preprocQueue {

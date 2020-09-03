@@ -40,7 +40,7 @@ func GetDeviceStatus(project string, node string, port string) bool {
 	var j map[string]interface{}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", waAPIBaseURL+"/GetDeviceStatus/"+project+"/"+node+"/"+port, bytes.NewBuffer([]byte{}))
+	req, _ := http.NewRequest("GET", waAPIBaseURL+"/GetDeviceStatus/"+project+"/"+node+"/"+port, bytes.NewBuffer([]byte{}))
 	req.SetBasicAuth(waUser, waPass)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
@@ -77,7 +77,7 @@ func GetTagValue(project string, tags []string) ([]float64, error) {
 
 	// Create request & execute
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", waAPIBaseURL+"/GetTagValue/"+project, bytes.NewBuffer(reqBody))
+	req, _ := http.NewRequest("POST", waAPIBaseURL+"/GetTagValue/"+project, bytes.NewBuffer(reqBody))
 	req.SetBasicAuth(waUser, waPass)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
@@ -124,7 +124,7 @@ func GetTextTagValue(project string, tags []string) ([]string, error) {
 
 	// Create request & execute
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", waAPIBaseURL+"/GetTagValueText/"+project, bytes.NewBuffer(reqBody))
+	req, _ := http.NewRequest("POST", waAPIBaseURL+"/GetTagValueText/"+project, bytes.NewBuffer(reqBody))
 	req.SetBasicAuth(waUser, waPass)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
@@ -138,12 +138,11 @@ func GetTextTagValue(project string, tags []string) ([]string, error) {
 	if err = json.Unmarshal(respBody, &waResp); err != nil {
 		return nil, err
 	}
-	var s = ""
 	for _, v := range waResp.Values {
 		if v.Quality != 0 {
 			return nil, errors.New("unable to read value, PLC might be offline")
 		}
-		s = string(v.Value[1 : len(v.Value)-1])
+		s := string(v.Value[1 : len(v.Value)-1])
 		val = append(val, s)
 	}
 	if gin.Mode() == gin.DebugMode {
@@ -159,7 +158,7 @@ func SetTagValue(project string, tag string, value int) error {
 
 	// Create request & execute
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", waAPIBaseURL+"/SetTagValue/"+project, bytes.NewBuffer(reqBody))
+	req, _ := http.NewRequest("POST", waAPIBaseURL+"/SetTagValue/"+project, bytes.NewBuffer(reqBody))
 	req.SetBasicAuth(waUser, waPass)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
@@ -190,7 +189,7 @@ func SetTextTagValue(project string, tag string, value string) error {
 
 	// Create request & execute
 	client := &http.Client{}
-	req, err := http.NewRequest("POST", waAPIBaseURL+"/SetTagValueText/"+project, bytes.NewBuffer(reqBody))
+	req, _ := http.NewRequest("POST", waAPIBaseURL+"/SetTagValueText/"+project, bytes.NewBuffer(reqBody))
 	req.SetBasicAuth(waUser, waPass)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
