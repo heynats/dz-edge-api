@@ -255,6 +255,22 @@ func RemoveAllJobs() {
 	printQueue("gal")
 }
 
+// RemovePreJobs ...
+func RemovePreJobs() {
+	preprocQueue = []jobQueueItem{
+		{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
+		{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
+		{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
+		{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0}}
+	printQueue("pre")
+}
+
+// RemoveGalJobs ...
+func RemoveGalJobs() {
+	galvanizeQueue = []jobQueueItem{{"", 0}, {"", 0}}
+	printQueue("gal")
+}
+
 // UpdateJob updates a job of the specified process type ('pre' or 'gal') and jobID in the corresponding queue
 func UpdateJob(procType string, id string, status int) (int, error) {
 	if procType == "pre" {

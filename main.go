@@ -44,6 +44,8 @@ func main() {
 		v1.GET("/job/:jobId/:processType", api.GetJob)    // get job details
 		v1.GET("/process/:operation", api.GetProcMetrics) // get process status details
 		v1.DELETE("/job/all", api.DeleteAllJobs)
+		v1.DELETE("/job/pre", api.DeletePreJobs)
+		v1.DELETE("/job/gal", api.DeleteGalJobs)
 	}
 
 	srv := &http.Server{
