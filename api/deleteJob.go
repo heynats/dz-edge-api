@@ -90,3 +90,55 @@ func DeleteGalJobs(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "removed all galvanization jobs"})
 }
+
+// DeletePreJobByID ...
+func DeletePreJobByID(c *gin.Context) {
+	if c.Param("jobId") == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "missing job ID"})
+		return
+	}
+	id := c.Param("jobId")
+	index := models.JobExists("pre", id)
+	if index < 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "job #" + id + " does not exist"})
+		return
+	}
+	err := services.SetTagValue("dotzero", models.WStatTags[index], 0)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	models.RemoveJob("pre", index)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "removed preprocess job #" + id})
+}
+
+// DeleteGalJobByID ...
+func DeleteGalJobByID(c *gin.Context) {
+	if c.Param("jobId") == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "missing job ID"})
+		return
+	}
+	id := c.Param("jobId")
+	index := models.JobExists("gal", id)
+	if index < 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "job #" + id + " does not exist"})
+		return
+	}
+	err := services.SetTagValue("dotzero", models.GStatTags[index], 0)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+	models.RemoveJob("gal", index)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "removed galvanization job #" + id})
+}
