@@ -94,9 +94,6 @@ type jobQueueItem struct {
 
 // preprocQueue represents the buffer registers for the "pre-treatment" process
 var preprocQueue = []jobQueueItem{
-	{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
-	{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
-	{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0},
 	{"", 0}, {"", 0}, {"", 0}, {"", 0}, {"", 0}}
 
 // galvanizeQueue represents the buffer registers for the "galvanization" process

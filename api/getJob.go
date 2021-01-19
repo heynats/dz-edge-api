@@ -25,14 +25,14 @@ type preprocData struct {
 }
 
 type galData struct {
-	Process           string    `json:"process"`
-	WoID              string    `json:"woID"`
-	FinishEmptyWeight float32   `json:"finishEmptyWeight"`
-	FinishFullWeight  float32   `json:"finishFullWeight"`
-	GoodsWeight       float32   `json:"goodsWeight"`
-	LittleBlueWeight  []float32 `json:"littleBlueWeight"`
-	LittleBlueTime    []float32 `json:"littleBlueTime"`
-	LittleBlueTemp    []float32 `json:"littleBlueTemp"`
+	Process string `json:"process"`
+	WoID    string `json:"woID"`
+	// FinishEmptyWeight float32   `json:"finishEmptyWeight"`
+	// FinishFullWeight  float32   `json:"finishFullWeight"`
+	// GoodsWeight       float32   `json:"goodsWeight"`
+	LittleBlueWeight []float32 `json:"littleBlueWeight"`
+	LittleBlueTime   []float32 `json:"littleBlueTime"`
+	LittleBlueTemp   []float32 `json:"littleBlueTemp"`
 }
 
 // GetJob ...
@@ -87,7 +87,8 @@ func getPreData(i int, job string) (*preprocData, error) {
 func getGalData(i int, job string) (*galData, error) {
 	switch i {
 	case 0:
-		tagArray := []string{models.G01WtBktEmpt, models.G01WtBktFull, models.G01WtGood}
+		// tagArray := []string{models.G01WtBktEmpt, models.G01WtBktFull, models.G01WtGood}
+		tagArray := []string{}
 		wtLilBlu := models.GetTagArray(models.G01WtLilblu, 5)
 		timeLilBlu := models.GetTagArray(models.G01TimeLilblu, 5)
 		tempLilBlu := models.GetTagArray(models.G01TempLilblu, 5)
@@ -99,27 +100,27 @@ func getGalData(i int, job string) (*galData, error) {
 		if err != nil {
 			return nil, err
 		}
-		wtLilBluVal := []float32{float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6])}
-		timeLilBluVal := []float32{float32(val[7]), float32(val[8]), float32(val[9]), float32(val[10]), float32(val[11])}
-		tempLilBluVal := []float32{float32(val[12]), float32(val[13]), float32(val[14]), float32(val[15]), float32(val[16])}
-		return &galData{"Galvanized", job, float32(val[0]), float32(val[1]), float32(val[2]), wtLilBluVal, timeLilBluVal, tempLilBluVal}, nil
-	case 1:
-		tagArray := []string{models.G02WtBktEmpt, models.G02WtBktFull, models.G02WtGood}
-		wtLilBlu := models.GetTagArray(models.G02WtLilblu, 5)
-		timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 5)
-		tempLilBlu := models.GetTagArray(models.G02TempLilblu, 5)
-		tags1 := append(tagArray, wtLilBlu...)
-		tags2 := append(timeLilBlu, tempLilBlu...)
-		tags := append(tags1, tags2...)
+		wtLilBluVal := []float32{float32(val[0]), float32(val[1]), float32(val[2]), float32(val[3]), float32(val[4])}
+		timeLilBluVal := []float32{float32(val[5]), float32(val[6]), float32(val[7]), float32(val[8]), float32(val[9])}
+		tempLilBluVal := []float32{float32(val[10]), float32(val[11]), float32(val[12]), float32(val[13]), float32(val[14])}
+		return &galData{"Galvanized", job, wtLilBluVal, timeLilBluVal, tempLilBluVal}, nil
+		// case 1:
+		// 	tagArray := []string{models.G02WtBktEmpt, models.G02WtBktFull, models.G02WtGood}
+		// 	wtLilBlu := models.GetTagArray(models.G02WtLilblu, 5)
+		// 	timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 5)
+		// 	tempLilBlu := models.GetTagArray(models.G02TempLilblu, 5)
+		// 	tags1 := append(tagArray, wtLilBlu...)
+		// 	tags2 := append(timeLilBlu, tempLilBlu...)
+		// 	tags := append(tags1, tags2...)
 
-		val, err := services.GetTagValue("dotzero", tags)
-		if err != nil {
-			return nil, err
-		}
-		wtLilBluVal := []float32{float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6])}
-		timeLilBluVal := []float32{float32(val[7]), float32(val[8]), float32(val[9]), float32(val[10]), float32(val[11])}
-		tempLilBluVal := []float32{float32(val[12]), float32(val[13]), float32(val[14]), float32(val[15]), float32(val[16])}
-		return &galData{"Galvanized", job, float32(val[0]), float32(val[1]), float32(val[2]), wtLilBluVal, timeLilBluVal, tempLilBluVal}, nil
+		// 	val, err := services.GetTagValue("dotzero", tags)
+		// 	if err != nil {
+		// 		return nil, err
+		// 	}
+		// 	wtLilBluVal := []float32{float32(val[2]), float32(val[3]), float32(val[4]), float32(val[5]), float32(val[6])}
+		// 	timeLilBluVal := []float32{float32(val[7]), float32(val[8]), float32(val[9]), float32(val[10]), float32(val[11])}
+		// 	tempLilBluVal := []float32{float32(val[12]), float32(val[13]), float32(val[14]), float32(val[15]), float32(val[16])}
+		// 	return &galData{"Galvanized", job, float32(val[0]), float32(val[1]), float32(val[2]), wtLilBluVal, timeLilBluVal, tempLilBluVal}, nil
 	}
 	return nil, errors.New("invalid index in getGalData")
 }

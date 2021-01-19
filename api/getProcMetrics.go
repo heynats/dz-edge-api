@@ -26,6 +26,12 @@ type galMetrics struct {
 	ActTemp   float32 `json:"actTemp"`
 }
 
+type weighingMetrics struct {
+	Process     string  `json:"process"`
+	Operation   int     `json:"operation"`
+	ScaleWeight float32 `json:"scaleWeight"`
+}
+
 // GetProcMetrics ...
 func GetProcMetrics(c *gin.Context) {
 	operation, err := strconv.Atoi(c.Param("operation")) // matching uri definition
@@ -94,6 +100,24 @@ func GetProcMetrics(c *gin.Context) {
 			return
 		}
 		c.JSON(http.StatusOK, galMetrics{"Galvanized", id[0], operation, float32(val[0]), float32(val[1])})
+		return
+	case 7: // Preprocess weighing
+		valTagStr := []string{models.WScale}
+		val, err := services.GetTagValue("dotzero", valTagStr)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, weighingMetrics{"Pre-treatment", operation, float32(val[0])})
+		return
+	case 8: // Galvanizing weighing
+		valTagStr := []string{models.GScale}
+		val, err := services.GetTagValue("dotzero", valTagStr)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, weighingMetrics{"Galvanized", operation, float32(val[0])})
 		return
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"message": "unknown operation"})
