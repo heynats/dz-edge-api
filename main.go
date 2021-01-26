@@ -23,7 +23,7 @@ func main() {
 	/\  ___\ /\  __-. /\  ___\ /\  ___\ /\  __ \ /\  == \/\ \   
 	\ \  __\ \ \ \/\ \\ \ \__ \\ \  __\ \ \  __ \\ \  _-/\ \ \  
 	 \ \_____\\ \____- \ \_____\\ \_____\\ \_\ \_\\ \_\   \ \_\ 
-	  \/_____/ \/____/  \/_____/ \/_____/ \/_/\/_/ \/_/    \/_/  v1.1.0 by Stanley Yeh, 2020
+	  \/_____/ \/____/  \/_____/ \/_____/ \/_/\/_/ \/_/    \/_/  v2.0.0 by Stanley Yeh, 2021
 	`
 	fmt.Println(asciiArt + "\n")
 
@@ -41,8 +41,9 @@ func main() {
 		})
 		v1.POST("/job/create", api.CreateJob)
 		v1.POST("/job/update", api.UpdateJob)
-		v1.GET("/job/:jobId/:processType", api.GetJob)    // get job details
-		v1.GET("/process/:operation", api.GetProcMetrics) // get process status details
+		v1.GET("/job/:jobId/:processType", api.GetJob)     // get job details
+		v1.POST("/process/:jobId/:route", api.UpdateRoute) // update job process metrics
+		v1.GET("/process/:operation", api.GetProcMetrics)  // get process status details
 		v1.DELETE("/job/all", api.DeleteAllJobs)
 		v1.DELETE("/job/pre", api.DeletePreJobs)           // delete all preprocess jobs
 		v1.DELETE("/job/pre/:jobId", api.DeletePreJobByID) // delete preprocess job by ID

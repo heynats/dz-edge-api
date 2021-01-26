@@ -275,7 +275,6 @@ var WStatTags = []string{
 	W01Status, W02Status, W03Status, W04Status, W05Status}
 
 var W01Metrics = []string{
-	W01Id, W01Status, W01WtBktEmpt, W01WtBktFull,
 	W01TimePicklingS1, W01TimePicklingS2, W01TimePicklingS3,
 	W01TimeDegreaseS1, W01TimeDegreaseS2, W01TimeDegreaseS3,
 	W01TimeHotWash1, W01TimeHotWash2, W01TimeHotWash3,
