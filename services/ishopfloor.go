@@ -278,7 +278,8 @@ func UpdateRouteMetrics(jobID string, routeNo string, metricsJSON string) error 
 		return err
 	}
 	if resp.StatusCode >= 400 || jsonResp["success"] != true {
-		return errors.New("failed to update metrics fields with iShopFloor API")
+		errMsg := jsonResp["errors"].([]interface{})
+		return errors.New("failed to update metrics fields with iShopFloor API: " + errMsg[0].(string))
 	}
 
 	return nil

@@ -24,15 +24,15 @@ func UpdateRoute(c *gin.Context) {
 	// Routes define the processes. Each process has its own metric fields to update.
 	switch route {
 	case 1:
-		index, err := models.UpdateJob("pre", jobID, 1)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-			return
-		}
-		if index < 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
-			return
-		}
+		// index, err := models.UpdateJob("pre", jobID, 1)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
+		// 	return
+		// }
+		// if index < 0 {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
+		// 	return
+		// }
 		// Get metric value from SCADA system
 		val, err := services.GetTagValue("dotzero", []string{models.WScale})
 		if err != nil {
@@ -40,7 +40,7 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		metrics := services.Route01Metrics{
-			EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
+			EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {
@@ -52,19 +52,19 @@ func UpdateRoute(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": index})
+		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": "n/a"})
 		return
 
 	case 2:
-		index, err := models.UpdateJob("pre", jobID, 1)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-			return
-		}
-		if index < 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
-			return
-		}
+		// index, err := models.UpdateJob("pre", jobID, 1)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
+		// 	return
+		// }
+		// if index < 0 {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update pre-treatment job index out of bound"})
+		// 	return
+		// }
 		// Get metric value from SCADA system
 		val, err := services.GetTagValue("dotzero", []string{models.WScale})
 		if err != nil {
@@ -72,7 +72,7 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		metrics := services.Route02Metrics{
-			FullBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
+			FullBucketWeight: strconv.FormatFloat(val[0], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {
@@ -84,7 +84,7 @@ func UpdateRoute(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": index})
+		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": "n/a"})
 		return
 
 	case 3:
@@ -151,9 +151,9 @@ func UpdateRoute(c *gin.Context) {
 				return
 			}
 			metrics := services.Route04Metrics{
-				SubBasketWeight: strconv.FormatFloat(val[0], 'f', -1, 64) + "," + strconv.FormatFloat(val[1], 'f', -1, 64) + "," + strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-				SubBasketTime:   strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64) + "," + strconv.FormatFloat(val[8], 'f', -1, 64) + "," + strconv.FormatFloat(val[9], 'f', -1, 64),
-				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64) + "," + strconv.FormatFloat(val[14], 'f', -1, 64),
+				SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
+				SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
+				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -182,9 +182,9 @@ func UpdateRoute(c *gin.Context) {
 				return
 			}
 			metrics := services.Route04Metrics{
-				SubBasketWeight: strconv.FormatFloat(val[0], 'f', -1, 64) + "," + strconv.FormatFloat(val[1], 'f', -1, 64) + "," + strconv.FormatFloat(val[2], 'f', -1, 64) + "," + strconv.FormatFloat(val[3], 'f', -1, 64) + "," + strconv.FormatFloat(val[4], 'f', -1, 64),
-				SubBasketTime:   strconv.FormatFloat(val[5], 'f', -1, 64) + "," + strconv.FormatFloat(val[6], 'f', -1, 64) + "," + strconv.FormatFloat(val[7], 'f', -1, 64) + "," + strconv.FormatFloat(val[8], 'f', -1, 64) + "," + strconv.FormatFloat(val[9], 'f', -1, 64),
-				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', -1, 64) + "," + strconv.FormatFloat(val[11], 'f', -1, 64) + "," + strconv.FormatFloat(val[12], 'f', -1, 64) + "," + strconv.FormatFloat(val[13], 'f', -1, 64) + "," + strconv.FormatFloat(val[14], 'f', -1, 64),
+				SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
+				SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
+				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -204,15 +204,15 @@ func UpdateRoute(c *gin.Context) {
 		}
 
 	case 5:
-		index, err := models.UpdateJob("gal", jobID, 1)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-			return
-		}
-		if index < 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
-			return
-		}
+		// index, err := models.UpdateJob("gal", jobID, 1)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
+		// 	return
+		// }
+		// if index < 0 {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
+		// 	return
+		// }
 		// Get metric value from SCADA system
 		val, err := services.GetTagValue("dotzero", []string{models.GScale})
 		if err != nil {
@@ -220,7 +220,7 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		metrics := services.Route05Metrics{
-			EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
+			EmptyBucketWeight: strconv.FormatFloat(val[0], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {
@@ -232,19 +232,19 @@ func UpdateRoute(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": index})
+		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": "n/a"})
 		return
 
 	case 6:
-		index, err := models.UpdateJob("gal", jobID, 1)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-			return
-		}
-		if index < 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
-			return
-		}
+		// index, err := models.UpdateJob("gal", jobID, 1)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
+		// 	return
+		// }
+		// if index < 0 {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
+		// 	return
+		// }
 		// Get metric value from SCADA system
 		val, err := services.GetTagValue("dotzero", []string{models.GScale})
 		if err != nil {
@@ -252,7 +252,7 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		metrics := services.Route06Metrics{
-			FullBucketWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
+			FullBucketWeight: strconv.FormatFloat(val[0], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {
@@ -264,19 +264,19 @@ func UpdateRoute(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": index})
+		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": "n/a"})
 		return
 
 	case 7:
-		index, err := models.UpdateJob("gal", jobID, 1)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
-			return
-		}
-		if index < 0 {
-			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
-			return
-		}
+		// index, err := models.UpdateJob("gal", jobID, 1)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
+		// 	return
+		// }
+		// if index < 0 {
+		// 	c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": "update galvanizing job index out of bound"})
+		// 	return
+		// }
 		// Get metric value from SCADA system
 		val, err := services.GetTagValue("dotzero", []string{models.GScale})
 		if err != nil {
@@ -284,7 +284,7 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		metrics := services.Route07Metrics{
-			ProductWeight: strconv.FormatFloat(val[0], 'f', -1, 64),
+			ProductWeight: strconv.FormatFloat(val[0], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {
@@ -296,7 +296,7 @@ func UpdateRoute(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": index})
+		c.JSON(http.StatusOK, gin.H{"woID": jobID, "queueIndex": "n/a"})
 		return
 
 	default:
