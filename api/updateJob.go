@@ -87,7 +87,7 @@ func UpdateJob(c *gin.Context) {
 			// 	return
 			// }
 			// Set job complete code in PLC with WebAccess API
-			err = services.SetTagValue("dotzero", models.W01Status, 0)
+			err = services.SetTagValue("dotzero", models.WStatTags[index], 0)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u003", "message": err.Error()})
 				return

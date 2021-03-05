@@ -289,32 +289,60 @@ var W01Metrics = []string{
 	W01TimeBkt1, W01TimeBkt2, W01TimeBkt3}
 
 var W02Metrics = []string{
-	// W02WtBktEmpt, W02WtBktFull, W02TimeDegrease1, W02TimeDegrease2, W02TimeDegrease3,
-	// W02TimePickling1, W02TimePickling2, W02TimePickling3, W02TimeFlux,
-	// Preproc01Temp, Preproc02Temp, Preproc03Temp, Preproc04Temp, Preproc05Temp,
-	// W02WtGood
-}
+	W02TimePicklingS1, W02TimePicklingS2, W02TimePicklingS3,
+	W02TimeDegreaseS1, W02TimeDegreaseS2, W02TimeDegreaseS3,
+	W02TimeHotWash1, W02TimeHotWash2, W02TimeHotWash3,
+	W02TimeDegrease1, W02TimeDegrease2, W02TimeDegrease3,
+	W02TimeDwash1, W02TimeDwash2, W02TimeDwash3,
+	W02TimeFlux1, W02TimeFlux2, W02TimeFlux3,
+	W02TimeDry1, W02TimeDry2, W02TimeDry3,
+	W02TimePickling11, W02TimePickling12, W02TimePickling13,
+	W02TimePickling21, W02TimePickling22, W02TimePickling23,
+	W02TimePwash1, W02TimePwash2, W02TimePwash3,
+	W02TimeSflux1, W02TimeSflux2, W02TimeSflux3,
+	W02TimeBkt1, W02TimeBkt2, W02TimeBkt3}
 
 var W03Metrics = []string{
-	// W03WtBktEmpt, W03WtBktFull, W03TimeDegrease1, W03TimeDegrease2, W03TimeDegrease3,
-	// W03TimePickling1, W03TimePickling2, W03TimePickling3, W03TimeFlux,
-	// Preproc01Temp, Preproc02Temp, Preproc03Temp, Preproc04Temp, Preproc05Temp,
-	// W03WtGood
-}
+	W03TimePicklingS1, W03TimePicklingS2, W03TimePicklingS3,
+	W03TimeDegreaseS1, W03TimeDegreaseS2, W03TimeDegreaseS3,
+	W03TimeHotWash1, W03TimeHotWash2, W03TimeHotWash3,
+	W03TimeDegrease1, W03TimeDegrease2, W03TimeDegrease3,
+	W03TimeDwash1, W03TimeDwash2, W03TimeDwash3,
+	W03TimeFlux1, W03TimeFlux2, W03TimeFlux3,
+	W03TimeDry1, W03TimeDry2, W03TimeDry3,
+	W03TimePickling11, W03TimePickling12, W03TimePickling13,
+	W03TimePickling21, W03TimePickling22, W03TimePickling23,
+	W03TimePwash1, W03TimePwash2, W03TimePwash3,
+	W03TimeSflux1, W03TimeSflux2, W03TimeSflux3,
+	W03TimeBkt1, W03TimeBkt2, W03TimeBkt3}
 
 var W04Metrics = []string{
-	// W04WtBktEmpt, W04WtBktFull, W04TimeDegrease1, W04TimeDegrease2, W04TimeDegrease3,
-	// W04TimePickling1, W04TimePickling2, W04TimePickling3, W04TimeFlux,
-	// Preproc01Temp, Preproc02Temp, Preproc03Temp, Preproc04Temp, Preproc05Temp,
-	// W04WtGood
-}
+	W04TimePicklingS1, W04TimePicklingS2, W04TimePicklingS3,
+	W04TimeDegreaseS1, W04TimeDegreaseS2, W04TimeDegreaseS3,
+	W04TimeHotWash1, W04TimeHotWash2, W04TimeHotWash3,
+	W04TimeDegrease1, W04TimeDegrease2, W04TimeDegrease3,
+	W04TimeDwash1, W04TimeDwash2, W04TimeDwash3,
+	W04TimeFlux1, W04TimeFlux2, W04TimeFlux3,
+	W04TimeDry1, W04TimeDry2, W04TimeDry3,
+	W04TimePickling11, W04TimePickling12, W04TimePickling13,
+	W04TimePickling21, W04TimePickling22, W04TimePickling23,
+	W04TimePwash1, W04TimePwash2, W04TimePwash3,
+	W04TimeSflux1, W04TimeSflux2, W04TimeSflux3,
+	W04TimeBkt1, W04TimeBkt2, W04TimeBkt3}
 
 var W05Metrics = []string{
-	// W05WtBktEmpt, W05WtBktFull, W05TimeDegrease1, W05TimeDegrease2, W05TimeDegrease3,
-	// W05TimePickling1, W05TimePickling2, W05TimePickling3, W05TimeFlux,
-	// Preproc01Temp, Preproc02Temp, Preproc03Temp, Preproc04Temp, Preproc05Temp,
-	// W05WtGood
-}
+	W05TimePicklingS1, W05TimePicklingS2, W05TimePicklingS3,
+	W05TimeDegreaseS1, W05TimeDegreaseS2, W05TimeDegreaseS3,
+	W05TimeHotWash1, W05TimeHotWash2, W05TimeHotWash3,
+	W05TimeDegrease1, W05TimeDegrease2, W05TimeDegrease3,
+	W05TimeDwash1, W05TimeDwash2, W05TimeDwash3,
+	W05TimeFlux1, W05TimeFlux2, W05TimeFlux3,
+	W05TimeDry1, W05TimeDry2, W05TimeDry3,
+	W05TimePickling11, W05TimePickling12, W05TimePickling13,
+	W05TimePickling21, W05TimePickling22, W05TimePickling23,
+	W05TimePwash1, W05TimePwash2, W05TimePwash3,
+	W05TimeSflux1, W05TimeSflux2, W05TimeSflux3,
+	W05TimeBkt1, W05TimeBkt2, W05TimeBkt3}
 
 var jobMetrics = [][]string{
 	W01Metrics, W02Metrics, W03Metrics, W04Metrics, W05Metrics}
