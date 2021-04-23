@@ -98,23 +98,30 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		// Get metric value from SCADA system
-		val, err := services.GetTagValue("dotzero", models.GetJobMetrics(index))
+		val, err := services.GetTagValue("dotzero", models.PreprocMetrics)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
 		}
 		metrics := services.Route03Metrics{
-			PicklingSmallTime:   strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64),
-			DegreasingSmallTime: strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64) + "," + strconv.FormatFloat(val[5], 'f', 2, 64),
-			HotWaterTime:        strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64),
-			DegreasingTime:      strconv.FormatFloat(val[9], 'f', 2, 64) + "," + strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64),
-			DegreasingWaterTime: strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
-			FluxTime:            strconv.FormatFloat(val[15], 'f', 2, 64) + "," + strconv.FormatFloat(val[16], 'f', 2, 64) + "," + strconv.FormatFloat(val[17], 'f', 2, 64),
-			DryingTime:          strconv.FormatFloat(val[18], 'f', 2, 64) + "," + strconv.FormatFloat(val[19], 'f', 2, 64) + "," + strconv.FormatFloat(val[20], 'f', 2, 64),
-			PicklingTime:        strconv.FormatFloat(val[21], 'f', 2, 64) + "," + strconv.FormatFloat(val[22], 'f', 2, 64) + "," + strconv.FormatFloat(val[23], 'f', 2, 64) + "," + strconv.FormatFloat(val[24], 'f', 2, 64) + "," + strconv.FormatFloat(val[25], 'f', 2, 64) + "," + strconv.FormatFloat(val[26], 'f', 2, 64),
-			PicklingWaterTime:   strconv.FormatFloat(val[27], 'f', 2, 64) + "," + strconv.FormatFloat(val[28], 'f', 2, 64) + "," + strconv.FormatFloat(val[29], 'f', 2, 64),
-			LessFluxTime:        strconv.FormatFloat(val[30], 'f', 2, 64) + "," + strconv.FormatFloat(val[31], 'f', 2, 64) + "," + strconv.FormatFloat(val[31], 'f', 2, 64),
-			TurnOverTime:        strconv.FormatFloat(val[33], 'f', 2, 64) + "," + strconv.FormatFloat(val[34], 'f', 2, 64) + "," + strconv.FormatFloat(val[35], 'f', 2, 64),
+			PicklingSmallTime:   strconv.FormatFloat(val[0], 'f', 2, 64),
+			DegreasingSmallTime: strconv.FormatFloat(val[1], 'f', 2, 64),
+			HotWaterTime:        strconv.FormatFloat(val[2], 'f', 2, 64),
+			DegreasingTime:      strconv.FormatFloat(val[3], 'f', 2, 64),
+			DegreasingWaterTime: strconv.FormatFloat(val[4], 'f', 2, 64),
+			FluxTime:            strconv.FormatFloat(val[5], 'f', 2, 64),
+			DryingTime:          strconv.FormatFloat(val[6], 'f', 2, 64),
+			PicklingTime1:       strconv.FormatFloat(val[7], 'f', 2, 64),
+			PicklingTime2:       strconv.FormatFloat(val[8], 'f', 2, 64),
+			PicklingWaterTime:   strconv.FormatFloat(val[9], 'f', 2, 64),
+			LessFluxTime:        strconv.FormatFloat(val[10], 'f', 2, 64),
+			TurnoverTime:        strconv.FormatFloat(val[11], 'f', 2, 64),
+			DegreasingTemp:      strconv.FormatFloat(val[12], 'f', 2, 64),
+			HotWaterTemp:        strconv.FormatFloat(val[13], 'f', 2, 64),
+			DegreaseTemp:        strconv.FormatFloat(val[14], 'f', 2, 64),
+			FluxTemp:            strconv.FormatFloat(val[15], 'f', 2, 64),
+			DryingTemp:          strconv.FormatFloat(val[16], 'f', 2, 64),
+			SmokelessTemp:       strconv.FormatFloat(val[17], 'f', 2, 64),
 		}
 		jsonstr, err := json.Marshal(metrics)
 		if err != nil {

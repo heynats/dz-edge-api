@@ -43,6 +43,18 @@ type Route02Metrics struct {
 }
 
 // Route03Metrics defines 鍍鋅前處理 key-values
+// type Route03Metrics struct {
+// 	DegreasingSmallTime string
+// 	HotWaterTime        string
+// 	DegreasingTime      string
+// 	DegreasingWaterTime string
+// 	FluxTime            string
+// 	DryingTime          string
+// 	PicklingTime        string
+// 	PicklingWaterTime   string
+// 	LessFluxTime        string
+// 	TurnOverTime        string
+// }
 type Route03Metrics struct {
 	PicklingSmallTime   string
 	DegreasingSmallTime string
@@ -51,10 +63,17 @@ type Route03Metrics struct {
 	DegreasingWaterTime string
 	FluxTime            string
 	DryingTime          string
-	PicklingTime        string
+	PicklingTime1       string
+	PicklingTime2       string
 	PicklingWaterTime   string
 	LessFluxTime        string
-	TurnOverTime        string
+	TurnoverTime        string
+	DegreasingTemp      string
+	HotWaterTemp        string
+	DegreaseTemp        string
+	FluxTemp            string
+	DryingTemp          string
+	SmokelessTemp       string
 }
 
 // Route04Metrics defines 鍍鋅 key-values
@@ -205,10 +224,17 @@ func UpdateRouteMetrics(jobID string, routeNo string, metricsJSON string) error 
 		data.Set("degreasingWaterTime", m.DegreasingWaterTime)
 		data.Set("fluxTime", m.FluxTime)
 		data.Set("dryingTime", m.DryingTime)
-		data.Set("picklingTime", m.PicklingTime)
+		data.Set("picklingTime1", m.PicklingTime1)
+		data.Set("picklingTime2", m.PicklingTime2)
 		data.Set("picklingWaterTime", m.PicklingWaterTime)
 		data.Set("lessFluxTime", m.LessFluxTime)
-		data.Set("turnOverTime", m.TurnOverTime)
+		data.Set("turnOverTime", m.TurnoverTime)
+		data.Set("degreasingTemp", m.DegreasingTemp)
+		data.Set("hotWaterTemp", m.HotWaterTemp)
+		data.Set("degreasTemp", m.DegreaseTemp)
+		data.Set("fluxTemp", m.FluxTemp)
+		data.Set("dryingTemp", m.DryingTemp)
+		data.Set("smokelessTemp", m.SmokelessTemp)
 		data.Set("status", "3")
 		data.Set("endTime", strconv.FormatInt(time.Now().Unix(), 10))
 	case "4":

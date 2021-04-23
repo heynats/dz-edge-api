@@ -516,6 +516,11 @@ const Preproc32Time = "preproc32_time"
 const Preproc32Ph = "preproc32_ph"
 const Preproc32Conduct = "preproc32_conduct"
 
+var PreprocMetrics = []string{
+	Preproc01Time, Preproc02Time, Preproc03Time, Preproc07Time, Preproc11Time, Preproc15Time,
+	Preproc17Time, Preproc18Time, Preproc22Time, Preproc26Time, Preproc30Time, Preproc32Time,
+	Preproc02Temp, Preproc03Temp, Preproc07Temp, Preproc15Temp, Preproc17Temp, Preproc30Temp}
+
 // GetTagArray generates a number of array tag name strings specified by 'count'
 func GetTagArray(baseTag string, count int) []string {
 	var s = []string{}
