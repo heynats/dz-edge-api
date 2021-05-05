@@ -120,6 +120,10 @@ func getAccessToken() (string, error) {
 		return "", err
 	}
 
+	if jsonResp["token"] == nil {
+		return "", errors.New("invalid token, please check login parameters")
+	}
+
 	return jsonResp["token"].(string), nil
 }
 

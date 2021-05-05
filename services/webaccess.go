@@ -178,7 +178,7 @@ func SetTagValue(project string, tag string, value int) error {
 	case 0:
 		return nil
 	default:
-		return errors.New("Unable to write value to WebAccess tag using SetTagValue API")
+		return errors.New("unable to write value to WebAccess tag using SetTagValue API")
 	}
 }
 
@@ -209,6 +209,6 @@ func SetTextTagValue(project string, tag string, value string) error {
 	case 0:
 		return nil
 	default:
-		return errors.New("Unable to write value to WebAccess tag using SetTagValueText API")
+		return errors.New("unable to write value to WebAccess tag using SetTagValueText API")
 	}
 }
