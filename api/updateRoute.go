@@ -98,7 +98,8 @@ func UpdateRoute(c *gin.Context) {
 			return
 		}
 		// Get metric value from SCADA system
-		val, err := services.GetTagValue("dotzero", models.PreprocMetrics)
+		// val, err := services.GetTagValue("dotzero", models.PreprocMetrics)
+		val, err := services.GetTagValue("dotzero", models.GetPreprocMetrics(index))
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 			return
