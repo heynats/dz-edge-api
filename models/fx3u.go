@@ -538,8 +538,9 @@ func GetJobMetrics(index int) []string {
 // GetPreprocMetrics ...
 func GetPreprocMetrics(index int) []string {
 	var wMetrics = GetJobMetrics(index)
-	return []string{
-		wMetrics[0], wMetrics[3], wMetrics[6], wMetrics[9], wMetrics[12], wMetrics[15],
-		wMetrics[18], wMetrics[21], wMetrics[24], wMetrics[27], wMetrics[30], wMetrics[33],
-		Preproc02Temp, Preproc03Temp, Preproc07Temp, Preproc15Temp, Preproc17Temp, Preproc30Temp}
+	return append(wMetrics, Preproc02Temp, Preproc03Temp, Preproc07Temp, Preproc15Temp, Preproc17Temp, Preproc30Temp)
+	// return []string{
+	// 	wMetrics[0], wMetrics[3], wMetrics[6], wMetrics[9], wMetrics[12], wMetrics[15],
+	// 	wMetrics[18], wMetrics[21], wMetrics[24], wMetrics[27], wMetrics[30], wMetrics[33],
+	// 	Preproc02Temp, Preproc03Temp, Preproc07Temp, Preproc15Temp, Preproc17Temp, Preproc30Temp}
 }
