@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"thingularity.co/dz-edge-api/models"
@@ -147,9 +148,9 @@ func UpdateRoute(c *gin.Context) {
 		case 0:
 			// Get metric value from SCADA system
 			tags := []string{}
-			wtLilBlu := models.GetTagArray(models.G01WtLilblu, 5)
-			timeLilBlu := models.GetTagArray(models.G01TimeLilblu, 5)
-			tempLilBlu := models.GetTagArray(models.G01TempLilblu, 5)
+			wtLilBlu := models.GetTagArray(models.G01WtLilblu, 150)
+			timeLilBlu := models.GetTagArray(models.G01TimeLilblu, 150)
+			tempLilBlu := models.GetTagArray(models.G01TempLilblu, 150)
 			tags = append(tags, wtLilBlu...)
 			tagss := append(timeLilBlu, tempLilBlu...)
 			tags = append(tags, tagss...)
@@ -158,10 +159,15 @@ func UpdateRoute(c *gin.Context) {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 				return
 			}
+			// metrics := services.Route04Metrics{
+			// 	SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
+			// 	SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
+			// 	SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+			// }
 			metrics := services.Route04Metrics{
-				SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
-				SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
-				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+				SubBasketWeight: formatSubBasketVal(val, 0, 150),
+				SubBasketTime:   formatSubBasketVal(val, 150, 150),
+				SubBasketTemp:   formatSubBasketVal(val, 300, 150),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -189,10 +195,15 @@ func UpdateRoute(c *gin.Context) {
 				c.JSON(http.StatusInternalServerError, gin.H{"code": "u002", "message": err.Error()})
 				return
 			}
+			// metrics := services.Route04Metrics{
+			// 	SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
+			// 	SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
+			// 	SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+			// }
 			metrics := services.Route04Metrics{
-				SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
-				SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
-				SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+				SubBasketWeight: formatSubBasketVal(val, 0, 150),
+				SubBasketTime:   formatSubBasketVal(val, 150, 150),
+				SubBasketTemp:   formatSubBasketVal(val, 300, 150),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -310,4 +321,12 @@ func UpdateRoute(c *gin.Context) {
 	default:
 		c.JSON(http.StatusBadRequest, gin.H{"code": "u001", "message": "Unknown route. Route number must be between 1~7."})
 	}
+}
+
+func formatSubBasketVal(val []float64, start int, count int) string {
+	v := []string{}
+	for i := start; i < count; i++ {
+		v[i] = strconv.FormatFloat(val[i], 'f', 2, 64)
+	}
+	return strings.Join(v, ",")
 }
