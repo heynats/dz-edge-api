@@ -165,9 +165,9 @@ func UpdateRoute(c *gin.Context) {
 			// 	SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
 			// }
 			metrics := services.Route04Metrics{
-				SubBasketWeight: formatSubBasketVal(val, 0, 150),
-				SubBasketTime:   formatSubBasketVal(val, 150, 150),
-				SubBasketTemp:   formatSubBasketVal(val, 300, 150),
+				SubBasketWeight: FormatSubBasketVal(val, 0, 150),
+				SubBasketTime:   FormatSubBasketVal(val, 150, 150),
+				SubBasketTemp:   FormatSubBasketVal(val, 300, 150),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -184,9 +184,9 @@ func UpdateRoute(c *gin.Context) {
 		case 1:
 			// Get metric value from SCADA system
 			tags := []string{}
-			wtLilBlu := models.GetTagArray(models.G02WtLilblu, 5)
-			timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 5)
-			tempLilBlu := models.GetTagArray(models.G02TempLilblu, 5)
+			wtLilBlu := models.GetTagArray(models.G02WtLilblu, 150)
+			timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 150)
+			tempLilBlu := models.GetTagArray(models.G02TempLilblu, 150)
 			tags = append(tags, wtLilBlu...)
 			tagss := append(timeLilBlu, tempLilBlu...)
 			tags = append(tags, tagss...)
@@ -201,9 +201,9 @@ func UpdateRoute(c *gin.Context) {
 			// 	SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
 			// }
 			metrics := services.Route04Metrics{
-				SubBasketWeight: formatSubBasketVal(val, 0, 150),
-				SubBasketTime:   formatSubBasketVal(val, 150, 150),
-				SubBasketTemp:   formatSubBasketVal(val, 300, 150),
+				SubBasketWeight: FormatSubBasketVal(val, 0, 150),
+				SubBasketTime:   FormatSubBasketVal(val, 150, 150),
+				SubBasketTemp:   FormatSubBasketVal(val, 300, 150),
 			}
 			jsonstr, err := json.Marshal(metrics)
 			if err != nil {
@@ -323,10 +323,10 @@ func UpdateRoute(c *gin.Context) {
 	}
 }
 
-func formatSubBasketVal(val []float64, start int, count int) string {
-	v := []string{}
-	for i := start; i < count; i++ {
-		v[i] = strconv.FormatFloat(val[i], 'f', 2, 64)
+func FormatSubBasketVal(val []float64, start int, count int) string {
+	result := make([]string, count)
+	for i, j := start, 0; i < start+count; i, j = i+1, j+1 {
+		result[j] = strconv.FormatFloat(val[i], 'f', 2, 64)
 	}
-	return strings.Join(v, ",")
+	return strings.Join(result, ",")
 }

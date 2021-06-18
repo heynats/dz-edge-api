@@ -157,9 +157,9 @@ func UpdateJob(c *gin.Context) {
 			case 0:
 				// Get metric value from SCADA system
 				tags := []string{}
-				wtLilBlu := models.GetTagArray(models.G01WtLilblu, 5)
-				timeLilBlu := models.GetTagArray(models.G01TimeLilblu, 5)
-				tempLilBlu := models.GetTagArray(models.G01TempLilblu, 5)
+				wtLilBlu := models.GetTagArray(models.G01WtLilblu, 50)
+				timeLilBlu := models.GetTagArray(models.G01TimeLilblu, 50)
+				tempLilBlu := models.GetTagArray(models.G01TempLilblu, 50)
 				tags = append(tags, wtLilBlu...)
 				tagss := append(timeLilBlu, tempLilBlu...)
 				tags = append(tags, tagss...)
@@ -169,9 +169,9 @@ func UpdateJob(c *gin.Context) {
 					return
 				}
 				metrics := services.Route04Metrics{
-					SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
-					SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
-					SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+					SubBasketWeight: FormatSubBasketVal(val, 0, 50),
+					SubBasketTime:   FormatSubBasketVal(val, 50, 50),
+					SubBasketTemp:   FormatSubBasketVal(val, 100, 50),
 				}
 				jsonstr, err := json.Marshal(metrics)
 				if err != nil {
@@ -200,9 +200,9 @@ func UpdateJob(c *gin.Context) {
 			case 1:
 				// Get metric value from SCADA system
 				tags := []string{}
-				wtLilBlu := models.GetTagArray(models.G02WtLilblu, 5)
-				timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 5)
-				tempLilBlu := models.GetTagArray(models.G02TempLilblu, 5)
+				wtLilBlu := models.GetTagArray(models.G02WtLilblu, 50)
+				timeLilBlu := models.GetTagArray(models.G02TimeLilblu, 50)
+				tempLilBlu := models.GetTagArray(models.G02TempLilblu, 50)
 				tags = append(tags, wtLilBlu...)
 				tagss := append(timeLilBlu, tempLilBlu...)
 				tags = append(tags, tagss...)
@@ -212,9 +212,9 @@ func UpdateJob(c *gin.Context) {
 					return
 				}
 				metrics := services.Route04Metrics{
-					SubBasketWeight: strconv.FormatFloat(val[0], 'f', 2, 64) + "," + strconv.FormatFloat(val[1], 'f', 2, 64) + "," + strconv.FormatFloat(val[2], 'f', 2, 64) + "," + strconv.FormatFloat(val[3], 'f', 2, 64) + "," + strconv.FormatFloat(val[4], 'f', 2, 64),
-					SubBasketTime:   strconv.FormatFloat(val[5], 'f', 2, 64) + "," + strconv.FormatFloat(val[6], 'f', 2, 64) + "," + strconv.FormatFloat(val[7], 'f', 2, 64) + "," + strconv.FormatFloat(val[8], 'f', 2, 64) + "," + strconv.FormatFloat(val[9], 'f', 2, 64),
-					SubBasketTemp:   strconv.FormatFloat(val[10], 'f', 2, 64) + "," + strconv.FormatFloat(val[11], 'f', 2, 64) + "," + strconv.FormatFloat(val[12], 'f', 2, 64) + "," + strconv.FormatFloat(val[13], 'f', 2, 64) + "," + strconv.FormatFloat(val[14], 'f', 2, 64),
+					SubBasketWeight: FormatSubBasketVal(val, 0, 50),
+					SubBasketTime:   FormatSubBasketVal(val, 50, 50),
+					SubBasketTemp:   FormatSubBasketVal(val, 100, 50),
 				}
 				jsonstr, err := json.Marshal(metrics)
 				if err != nil {
